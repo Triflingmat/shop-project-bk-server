@@ -41,4 +41,7 @@ public interface GoodsMapper {
 """)
     long getGoodsCount(Integer mode);
 
+    @Select("SELECT * FROM goods WHERE id = #{id}")
+    Goods getGoodsById(Integer id);
+
 }

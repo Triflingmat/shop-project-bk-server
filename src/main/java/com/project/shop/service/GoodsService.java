@@ -12,4 +12,6 @@ public interface GoodsService {
     int addGoodsData(Goods goods);
 
     int delGoodsData(Integer id);
+
+    Goods getGoodsById(Integer id);
 }

@@ -38,7 +38,19 @@ public interface OrderMapper {
 """)
     List<Order> findOrderData(Integer offset, Integer pageSize, Integer mode);
 
-    @Update("UPDATE `shop_project`.`orders` SET `user_id` = #{user_id}, `state` = #{state}, `username` = #{username}, `phone` = #{phone}, `address` = #{address}, `total_amount` = #{total_amount}, `remark` = #{remark}, `create_time` = #{create_time} WHERE `id` = #{id}")
+    @Update("""
+        <script>
+            UPDATE `shop_project`.`orders`
+            SET `state` = #{state}
+            <if test="user_id != null">,`user_id` = #{user_id}</if>
+            <if test="username != null">,`username` = #{username}</if>
+            <if test="phone != null">,`phone` = #{phone}</if>
+            <if test="address != null">,`address` = #{address}</if>
+            <if test="total_amount != null">,`total_amount` = #{total_amount}</if>
+            <if test="remark != null">,`remark` = #{remark}</if>
+            WHERE `id` = #{id}
+        </script>
+    """)
     int updateOrderData(Order order);
 
     @Insert("INSERT INTO `shop_project`.`orders` (`user_id` , `state`, `username`, `phone`, `address`, `total_amount`, `remark`, `create_time`) VALUES (#{user_id}, #{state}, #{username}, #{phone}, #{address}, #{total_amount}, #{remark}, #{create_time})")
@@ -58,4 +70,28 @@ public interface OrderMapper {
     </script>
 """)
     long getOrderCount(Integer mode);
+
+    // === 按用户筛选 ===
+    @Select("""
+        <script>
+            SELECT * FROM orders
+            WHERE user_id = #{userId}
+            <if test="mode != null and mode != 0">
+                AND state = #{mode}
+            </if>
+            LIMIT #{offset}, #{pageSize}
+        </script>
+    """)
+    List<Order> findOrderDataByUser(Integer offset, Integer pageSize, Integer mode, Integer userId);
+
+    @Select("""
+    <script>
+        SELECT count(*) FROM orders
+        WHERE user_id = #{userId}
+        <if test="mode != null and mode != 0">
+            AND state = #{mode}
+        </if>
+    </script>
+    """)
+    long getOrderCountByUser(Integer mode, Integer userId);
 }

@@ -36,4 +36,7 @@ public interface UserMapper {
 
     @Select("SELECT count(*) FROM user WHERE power = #{mode}")
     long getUserCount(Integer mode);
+
+    @Select("SELECT * FROM user WHERE id = #{id}")
+    User findById(Integer id);
 }

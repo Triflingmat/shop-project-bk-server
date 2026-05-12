@@ -24,14 +24,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         String token = request.getHeader("Authorization");
-        logger.info("接收到的Authorization头: {}", token); // 记录接收到的token
+        logger.info("接收到的Authorization头: {}", token);
 
         try{
             Map<String,Object> claims = JwtUtil.parseToken(token);
-            logger.info("Token验证成功，claims: {}", claims); // 记录验证成功的claims
+            logger.info("Token验证成功，claims: {}", claims);
+            // 将 claims 存入 request，方便 Controller 获取当前用户信息
+            request.setAttribute("claims", claims);
             return true;
         }catch (Exception e){
-            logger.error("Token验证失败，token: {}, 错误信息: {}", token, e.getMessage(), e); // 记录详细错误信息
+            logger.error("Token验证失败，token: {}, 错误信息: {}", token, e.getMessage(), e);
             response.setStatus(401);
             return false;
         }

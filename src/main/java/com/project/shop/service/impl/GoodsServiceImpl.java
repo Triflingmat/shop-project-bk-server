@@ -37,5 +37,8 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int delGoodsData(Integer id){return goodsMapper.delGoodsData(id);}
 
+    @Override
+    public Goods getGoodsById(Integer id){return goodsMapper.getGoodsById(id);}
+
 
 }

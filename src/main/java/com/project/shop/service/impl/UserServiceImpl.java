@@ -52,13 +52,47 @@ public class UserServiceImpl implements UserService {
         if (!EncryptUtils.verifyPassword(password,user.getPassword(),user.getSalt())) {
             throw new RuntimeException("密码错误");
         }
-        if (user.getPower() == 3){
-            throw new RuntimeException("权限不足");
-        }
         Map<String, Object> claims = new HashMap<>();
         claims.put("id",user.getId());
         claims.put("username",user.getUsername());
         claims.put("power",user.getPower());
         return JwtUtil.genToken(claims);
+    }
+
+    public User register(User user) {
+        if (userMapper.findByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("用户名已存在");
+        }
+        // 默认设置为普通用户
+        if (user.getPower() == null) {
+            user.setPower(3);
+        }
+        String salt = EncryptUtils.generateSalt();
+        String hashPassword = EncryptUtils.sha256HashWithSalt(user.getPassword(), salt);
+        user.setPassword(hashPassword);
+        user.setSalt(salt);
+        userMapper.addUserData(user);
+        return user;
+    }
+
+    @Override
+    public User findById(Integer id) {
+        return userMapper.findById(id);
+    }
+
+    @Override
+    public void changePassword(Integer userId, String oldPassword, String newPassword) {
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        if (!EncryptUtils.verifyPassword(oldPassword, user.getPassword(), user.getSalt())) {
+            throw new RuntimeException("原密码错误");
+        }
+        String salt = EncryptUtils.generateSalt();
+        String hashPassword = EncryptUtils.sha256HashWithSalt(newPassword, salt);
+        user.setPassword(hashPassword);
+        user.setSalt(salt);
+        userMapper.updateUserData(user);
     }
 }

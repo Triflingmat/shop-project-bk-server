@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/shop_project
+    url: jdbc:mysql://localhost/shop_project
     username: root
     password: 1458902367
 mybatis-plus:

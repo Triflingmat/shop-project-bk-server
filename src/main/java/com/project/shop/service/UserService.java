@@ -10,6 +10,8 @@ public interface UserService {
 
     String login(String username, String password);
 
+    User register(User user);
+
     Page findUserData(Integer pageNum, Integer pageSize,Integer mode);
 
     int updateUserData(User user);
@@ -17,4 +19,8 @@ public interface UserService {
     int addUserData(User user);
 
     int delUserData(Integer id);
+
+    User findById(Integer id);
+
+    void changePassword(Integer userId, String oldPassword, String newPassword);
 }

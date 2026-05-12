@@ -4,11 +4,13 @@ import com.project.shop.common.Result;
 import com.project.shop.entity.pojo.Page;
 import com.project.shop.entity.pojo.User;
 import com.project.shop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.project.shop.util.EncryptUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -74,4 +76,63 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    public Result<User> register(@RequestBody User user){
+        try {
+            User newUser = userService.register(user);
+            return Result.success(newUser);
+        }catch (RuntimeException e){
+            return  Result.fail(e.getMessage());
+        }
+    }
+
+    /** 获取当前登录用户信息 */
+    @GetMapping("/user/me")
+    public Result<User> getCurrentUser(HttpServletRequest request){
+        try {
+            Map<String, Object> claims = (Map<String, Object>) request.getAttribute("claims");
+            if (claims == null) {
+                return Result.fail("未登录");
+            }
+            Integer userId = (Integer) claims.get("id");
+            User user = userService.findById(userId);
+            if (user == null) {
+                return Result.fail("用户不存在");
+            }
+            // 清除敏感信息
+            user.setPassword(null);
+            user.setSalt(null);
+            return Result.success(user);
+        } catch (RuntimeException e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+    /** 修改密码（验证原密码） */
+    @PutMapping("/user/changePassword")
+    public Result<String> changePassword(@RequestBody Map<String, String> params, HttpServletRequest request){
+        try {
+            Map<String, Object> claims = (Map<String, Object>) request.getAttribute("claims");
+            if (claims == null) {
+                return Result.fail("未登录");
+            }
+            Integer userId = (Integer) claims.get("id");
+            String oldPassword = params.get("oldPassword");
+            String newPassword = params.get("newPassword");
+
+            if (oldPassword == null || newPassword == null) {
+                return Result.fail("参数不能为空");
+            }
+
+            userService.changePassword(userId, oldPassword, newPassword);
+            return Result.success("密码修改成功");
+        } catch (RuntimeException e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "连通成功";
+    }
 }

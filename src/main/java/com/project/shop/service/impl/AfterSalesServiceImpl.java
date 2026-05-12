@@ -28,8 +28,24 @@ public class AfterSalesServiceImpl implements AfterSalesService {
         return page;
     }
 
-    public int  updateAfterSalesData(AfterSales afterSales){
+    public int updateAfterSalesData(AfterSales afterSales){
         return afterSalesMapper.updateAfterSalesData(afterSales);
+    }
+
+    public int addAfterSalesData(AfterSales afterSales){
+        return afterSalesMapper.addAfterSalesData(afterSales);
+    }
+
+    public Page findUserAfterSalesData(Integer pageNum, Integer pageSize, Integer type, Integer status, Integer userId){
+        int offset = (pageNum - 1) * pageSize;
+        List<AfterSales> list = afterSalesMapper.findAfterSalesDataByUser(offset, pageSize, type, status, userId);
+        long total = afterSalesMapper.getAfterSalesCountByUser(type, status, userId);
+        Page<AfterSales> page = new Page<>();
+        page.setPageNum(pageNum);
+        page.setPageSize(pageSize);
+        page.setList(list);
+        page.setTotal(total);
+        return page;
     }
 
 }

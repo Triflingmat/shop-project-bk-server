@@ -54,4 +54,18 @@ public class GoodsController {
         }
         return Result.success(null);
     }
+
+    /** 获取单个商品详情 */
+    @GetMapping("/goods/detail/{id}")
+    public Result<Goods> getGoodsDetail(@PathVariable Integer id){
+        try {
+            Goods goods = goodsService.getGoodsById(id);
+            if (goods == null) {
+                return Result.fail("商品不存在");
+            }
+            return Result.success(goods);
+        } catch (RuntimeException e) {
+            return Result.fail(e.getMessage());
+        }
+    }
 }

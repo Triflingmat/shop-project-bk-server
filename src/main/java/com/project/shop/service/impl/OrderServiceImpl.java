@@ -36,6 +36,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page findUserOrderData(Integer pageNum, Integer pageSize, Integer mode, Integer userId){
+        int offset = (pageNum - 1) * pageSize;
+        List<Order> list = orderMapper.findOrderDataByUser(offset, pageSize, mode, userId);
+        long total = orderMapper.getOrderCountByUser(mode, userId);
+        Page<Order> page = new Page<>();
+        page.setPageNum(pageNum);
+        page.setPageSize(pageSize);
+        page.setList(list);
+        page.setTotal(total);
+        return page;
+    }
+
+    @Override
     public int updateOrderData(Order order){return orderMapper.updateOrderData(order);}
 
     @Override
