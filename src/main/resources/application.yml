@@ -5,17 +5,17 @@ server:
 spring:
   ai:
     openai:
-      api-key: sk-0adebfae724a4d9aadb6214660b19879
-      base-url: https://api.deepseek.com
+      api-key: apikey
+      base-url: AI-url
       chat:
         options:
-          model: deepseek-v4-flash
+          model: AI-model
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://triflingmat.icu/shop_project
+    url: jdbc:mysql://localhost.icu/shop_project
     username: shop_project
-    password: PaPBZ84DFkdNFnMR
+    password: password
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
