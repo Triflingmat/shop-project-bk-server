@@ -5,7 +5,7 @@ import com.project.shop.entity.pojo.Goods;
 
 public interface GoodsService {
 
-    Page findGoodsData(Integer pageNum, Integer pageSize, Integer mode);
+    Page findGoodsData(Integer pageNum, Integer pageSize, Integer mode, String name);
 
     int updateGoodsData(Goods goods);
 

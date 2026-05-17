@@ -16,10 +16,10 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsMapper goodsMapper;
 
     @Override
-    public Page findGoodsData(Integer pageNum, Integer pageSize,Integer mode){
+    public Page findGoodsData(Integer pageNum, Integer pageSize, Integer mode, String name){
         int offset = (pageNum - 1) * pageSize;
-        List<Goods> list = goodsMapper.findGoodsData(offset,pageSize,mode);
-        long total = goodsMapper.getGoodsCount(mode);
+        List<Goods> list = goodsMapper.findGoodsData(offset, pageSize, mode, name);
+        long total = goodsMapper.getGoodsCount(mode, name);
         Page<Goods> page = new Page<>();
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);

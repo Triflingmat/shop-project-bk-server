@@ -15,10 +15,13 @@ public interface GoodsMapper {
             <if test="mode != null and mode != 0">
                 AND category_id = #{mode}
             </if>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
             LIMIT #{offset}, #{pageSize}
         </script>
 """)
-    List<Goods> findGoodsData(Integer offset, Integer pageSize, Integer mode);
+    List<Goods> findGoodsData(Integer offset, Integer pageSize, Integer mode, String name);
 
     @Update("UPDATE `shop_project`.`goods` SET `name` = #{name}, `price` = #{price}, `is_on_sale` = #{is_on_sale}, `goods_img` = #{goods_img}, `category_id` = #{category_id}, `goods_desc` = #{goods_desc}, `stock` = #{stock} WHERE `id` = #{id}")
     int updateGoodsData(Goods goods);
@@ -37,9 +40,12 @@ public interface GoodsMapper {
         <if test="mode != null and mode != 0">
             AND category_id = #{mode}
         </if>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
     </script>
 """)
-    long getGoodsCount(Integer mode);
+    long getGoodsCount(Integer mode, String name);
 
     @Select("SELECT * FROM goods WHERE id = #{id}")
     Goods getGoodsById(Integer id);

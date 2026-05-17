@@ -3,9 +3,17 @@ server:
   servlet:
     context-path: /api
 spring:
+  ai:
+    openai:
+      api-key: sk-0adebfae724a4d9aadb6214660b19879
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-v4-flash
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/shop_project
+    url: jdbc:mysql://triflingmat.icu/shop_project
     username: shop_project
     password: PaPBZ84DFkdNFnMR
 mybatis-plus:

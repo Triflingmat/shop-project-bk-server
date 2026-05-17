@@ -18,9 +18,10 @@ public class GoodsController {
     public Result<Page<Goods>> findGoodsData(
             @RequestParam(defaultValue = "1")Integer pageNum,
             @RequestParam(defaultValue = "15")Integer pageSize,
-            @RequestParam(defaultValue = "0") Integer mode){
+            @RequestParam(defaultValue = "0") Integer mode,
+            @RequestParam(defaultValue = "") String name){
         try{
-            Page<Goods> page = goodsService.findGoodsData(pageNum,pageSize,mode);
+            Page<Goods> page = goodsService.findGoodsData(pageNum, pageSize, mode, name);
             return Result.success(page);
         }catch (RuntimeException e){
             return Result.fail(e.getMessage());
