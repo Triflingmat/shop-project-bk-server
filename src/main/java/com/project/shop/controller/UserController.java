@@ -69,10 +69,13 @@ public class UserController {
     @PostMapping("/login")
     public Result<String> login(@RequestBody User user){
         try {
+            if (user.getUsername() == null || user.getPassword() == null) {
+                return Result.fail("用户名和密码不能为空");
+            }
             String token = userService.login(user.getUsername(),user.getPassword());
             return Result.success(token);
         }catch (RuntimeException e){
-            return  Result.fail(e.getMessage());
+            return  Result.fail(e.getMessage() != null ? e.getMessage() : "登录失败，请稍后重试");
         }
     }
 

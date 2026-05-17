@@ -60,6 +60,9 @@ public class User {
         return power;
     }
 
+    public User() {
+    }
+
     public User(Integer id, String username, String password, Integer power,String phone,String address,String salt){
         this.id =id;
         this.username=username;

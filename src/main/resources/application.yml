@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/shop_project
-    username: root
-    password: 1458902367
+    url: jdbc:mysql://127.0.0.1/shop_project
+    username: shop_project
+    password: PaPBZ84DFkdNFnMR
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
